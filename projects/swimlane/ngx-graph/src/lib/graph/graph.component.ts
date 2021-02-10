@@ -545,10 +545,14 @@ export class GraphComponent extends BaseChartComponent implements OnInit, OnChan
       maxX = node.position.x + node.dimension.width > maxX ? node.position.x + node.dimension.width : maxX;
       maxY = node.position.y + node.dimension.height > maxY ? node.position.y + node.dimension.height : maxY;
     }
-    minX -= 100;
-    minY -= 100;
-    maxX += 100;
-    maxY += 100;
+
+    if (this.showMiniMap) {
+      minX -= 100;
+      minY -= 100;
+      maxX += 100;
+      maxY += 100;
+    }
+
     this.graphDims.width = maxX - minX;
     this.graphDims.height = maxY - minY;
     this.minimapOffsetX = minX;
