@@ -89,6 +89,8 @@ export class GraphComponent extends BaseChartComponent implements OnInit, OnChan
   @Input() panOnZoom = true;
   @Input() animate? = false;
   @Input() autoCenter = false;
+  /** Margin applied around the drawing area on zoom to fit */
+  @Input() zoomToFitMargin: {x: number, y: number};
   @Input() update$: Observable<any>;
   @Input() center$: Observable<any>;
   @Input() zoomToFit$: Observable<any>;
@@ -1116,8 +1118,15 @@ export class GraphComponent extends BaseChartComponent implements OnInit, OnChan
    * Zooms to fit the entier graph
    */
   zoomToFit(): void {
-    const heightZoom = this.dims.height / this.graphDims.height;
-    const widthZoom = this.dims.width / this.graphDims.width;
+
+    const margin = {
+      x: this.zoomToFitMargin?.x || 0,
+      y: this.zoomToFitMargin?.y || 0,
+    }
+
+    // Margin value is x2 for top/bottom and left/right
+    const heightZoom = this.dims.height / (this.graphDims.height + margin.y * 2);
+    const widthZoom = this.dims.width / (this.graphDims.width + margin.x * 2);
     let zoomLevel = Math.min(heightZoom, widthZoom, 1);
 
     if (zoomLevel < this.minZoomLevel) {
